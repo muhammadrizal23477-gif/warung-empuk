@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warung Empuk — Buku Kas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <div class="app-header">
+    <svg class="logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gAccent" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#f0b458"/><stop offset="1" stop-color="#c98a2c"/>
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="18" fill="#1c3129"/>
+      <rect x="1" y="1" width="62" height="62" rx="17" stroke="#e8a33d" stroke-opacity="0.25"/>
+      <path d="M14 26L17 15C17.4 13.6 18.7 12.6 20.2 12.6H43.8C45.3 12.6 46.6 13.6 47 15L50 26" stroke="url(#gAccent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 26C14 23.5 16 21.5 18.5 21.5C21 21.5 23 23.5 23 26C23 23.5 25 21.5 27.5 21.5C30 21.5 32 23.5 32 26C32 23.5 34 21.5 36.5 21.5C39 21.5 41 23.5 41 26C41 23.5 43 21.5 45.5 21.5C48 21.5 50 23.5 50 26" stroke="url(#gAccent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18 27V45C18 46.6569 19.3431 48 21 48H43C44.6569 48 46 46.6569 46 45V27" stroke="#f3ecdd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M27 48V38C27 35.7909 28.7909 34 31 34H33C35.2091 34 37 35.7909 37 38V48" stroke="#f3ecdd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="brand">
+      <h1>Warung Empuk</h1>
+      <p>Buku kas digital — catat tiap rupiah</p>
+    </div>
+    <div class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText">Menyambung…</span></div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button data-filter="today" class="active">Hari ini</button>
+    <button data-filter="week">Minggu ini</button>
+    <button data-filter="month">Bulan ini</button>
+    <button data-filter="all">Semua</button>
+  </div>
+
+  <div class="app-grid">
+    <div class="app-col-left">
+
+      <div class="hero">
+        <p class="hero-label" id="heroLabel">Untung hari ini</p>
+        <p class="hero-amount gain" id="heroAmount">Rp 0</p>
+        <p class="hero-sub" id="heroSub">Memuat data…</p>
+        <div class="hero-split">
+          <div class="split-chip in">
+            <div class="k"><span class="dot"></span>Uang masuk</div>
+            <div class="v" id="totalMasuk">Rp 0</div>
+          </div>
+          <div class="split-chip out">
+            <div class="k"><span class="dot"></span>Uang keluar</div>
+            <div class="v" id="totalKeluar">Rp 0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title" id="formTitle">Tambah transaksi</div>
+      <div class="add-card" id="addCard">
+        <div class="edit-banner" id="editBanner" style="display:none;">
+          <span>Mengedit transaksi</span>
+          <button type="button" id="cancelEditTop">Batal</button>
+        </div>
+        <div class="type-toggle">
+          <button type="button" data-type="masuk" class="active">↓ Uang Masuk</button>
+          <button type="button" data-type="keluar">↑ Uang Keluar</button>
+        </div>
+
+        <div class="field">
+          <label for="fAmount">Jumlah</label>
+          <div class="amount-wrap">
+            <span>Rp</span>
+            <input type="text" inputmode="numeric" id="fAmount" placeholder="0">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="fDesc">Keterangan</label>
+          <input type="text" id="fDesc" placeholder="Contoh: Jual nasi goreng 5 porsi">
+        </div>
+
+        <div class="field">
+          <label>Kategori</label>
+          <div class="chip-row" id="catRow"></div>
+        </div>
+
+        <div class="field">
+          <label for="fDate">Tanggal</label>
+          <input type="date" id="fDate">
+        </div>
+
+        <div class="form-actions">
+          <button class="submit-btn" id="submitBtn">Simpan transaksi</button>
+          <button class="cancel-btn" id="cancelEditBottom" style="display:none;">Batal</button>
+        </div>
+      </div>
+
+      <div class="section-title">Tren 7 hari terakhir<span class="sub">untung / rugi harian</span></div>
+      <div class="chart-card">
+        <div class="chart-bars" id="chartBars"></div>
+      </div>
+
+      <div class="section-title" id="catTitle" style="display:none;">Kategori teratas<span class="sub" id="catSub"></span></div>
+      <div class="cat-card" id="catCard" style="display:none;"></div>
+
+    </div>
+
+    <div class="app-col-right">
+      <div class="section-title">Riwayat kas<span class="sub" id="ledgerCount"></span></div>
+      <div class="ledger-tools">
+        <input type="search" id="searchBox" placeholder="Cari keterangan atau kategori…">
+        <button class="export-btn" id="exportBtn" title="Unduh sebagai CSV">⬇ CSV</button>
+      </div>
+      <div id="ledger">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="footnote">Catatan tersimpan di database — aman walau aplikasi ditutup, browser diganti, atau server dimulai ulang.</p>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
